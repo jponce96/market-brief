@@ -1,0 +1,36 @@
+name: Datos de mercado
+
+# 09:15 UTC = 06:15 en Buenos Aires, de lunes a viernes.
+# GitHub puede atrasar la ejecución entre 5 y 15 minutos en horarios pico,
+# por eso corre 45 minutos antes de que se necesite.
+on:
+  schedule:
+    - cron: "15 9 * * 1-5"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  datos:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - run: pip install -r requirements.txt
+
+      - name: Bajar cierres
+        run: python scripts/bajar_datos.py
+
+      - name: Guardar en el repositorio
+        run: |
+          git config user.name "market-brief-bot"
+          git config user.email "actions@github.com"
+          git add data/market_data.json
+          git diff --staged --quiet || git commit -m "datos de mercado $(date -u +%F)"
+          git push
