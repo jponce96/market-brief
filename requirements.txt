@@ -1,0 +1,4 @@
+yfinance>=0.2.55
+pandas>=2.2
+edge-tts>=7.0
+piper-tts>=1.2

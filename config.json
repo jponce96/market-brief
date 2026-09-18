@@ -1,0 +1,66 @@
+{
+  "_nota": "Este archivo no lleva secretos. Claves, IDs y URLs privadas van en variables de entorno (Secrets en GitHub, .env en tu PC).",
+
+  "audio": {
+    "voz": "en-US-AndrewNeural",
+    "velocidad": "-8%",
+    "volumen": "+0%"
+  },
+
+  "mail": {
+    "asunto": "Market Brief — {fecha}",
+    "servidor_smtp": "smtp.gmail.com",
+    "puerto_smtp": 465,
+    "adjuntar_audio": true,
+    "tamano_max_adjunto_mb": 20
+  },
+
+  "informe": {
+    "titulo": "Market Brief"
+  },
+
+  "datos": {
+    "grupos": {
+      "Equities US": {
+        "S&P 500": "^GSPC",
+        "Nasdaq Composite": "^IXIC",
+        "Dow Jones": "^DJI",
+        "Russell 2000": "^RUT",
+        "VIX": "^VIX"
+      },
+      "Equities internacionales": {
+        "Stoxx 600": "^STOXX",
+        "DAX": "^GDAXI",
+        "FTSE 100": "^FTSE",
+        "Nikkei 225": "^N225",
+        "Hang Seng": "^HSI",
+        "S&P Merval": "^MERV"
+      },
+      "Tasas US": {
+        "Treasury 13 semanas": "^IRX",
+        "Treasury 5 anios": "^FVX",
+        "Treasury 10 anios": "^TNX",
+        "Treasury 30 anios": "^TYX"
+      },
+      "Commodities": {
+        "WTI": "CL=F",
+        "Brent": "BZ=F",
+        "Oro": "GC=F",
+        "Cobre": "HG=F",
+        "Soja": "ZS=F"
+      },
+      "Monedas": {
+        "Dollar Index": "DX-Y.NYB",
+        "EUR/USD": "EURUSD=X",
+        "USD/JPY": "USDJPY=X",
+        "USD/CNY": "USDCNY=X",
+        "USD/ARS": "USDARS=X"
+      },
+      "Cripto": {
+        "Bitcoin": "BTC-USD",
+        "Ether": "ETH-USD"
+      }
+    },
+    "tickers_como_tasa": ["^IRX", "^FVX", "^TNX", "^TYX"]
+  }
+}
