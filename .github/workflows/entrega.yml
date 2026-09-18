@@ -1,0 +1,58 @@
+name: Audio y mail
+
+# 10:20 UTC = 07:20 en Buenos Aires, de lunes a viernes.
+# Corre después de que Claude dejó el guion del día en el documento de Drive.
+on:
+  schedule:
+    - cron: "20 10 * * 1-5"
+  workflow_dispatch:
+    inputs:
+      sin_audio:
+        description: "Mandar solo el link, sin generar el MP3"
+        type: boolean
+        default: false
+      guardar_audio:
+        description: "Guardar el MP3 como archivo descargable de la corrida (en un repositorio público lo puede bajar cualquiera)"
+        type: boolean
+        default: false
+
+jobs:
+  entrega:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - run: pip install -r requirements.txt
+
+      - name: Traer el guion del día
+        env:
+          GUION_DOC_ID: ${{ secrets.GUION_DOC_ID }}
+        run: python scripts/bajar_guion.py
+
+      - name: Generar el audio
+        if: ${{ !inputs.sin_audio }}
+        run: python scripts/generar_audio.py
+
+      # Desactivado por defecto: en un repositorio público, los archivos de una
+      # corrida los puede descargar cualquiera. Se activa a mano solo si un día
+      # el mail falla y hace falta rescatar el MP3.
+      - name: Guardar el MP3 de la corrida
+        if: ${{ inputs.guardar_audio }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: market-brief-audio
+          path: audio/*.mp3
+          retention-days: 3
+
+      - name: Mandar el mail
+        env:
+          SMTP_USER: ${{ secrets.SMTP_USER }}
+          SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+          SUSCRIPTORES_CSV_URL: ${{ secrets.SUSCRIPTORES_CSV_URL }}
+          INFORME_URL: ${{ secrets.INFORME_URL }}
+        run: python scripts/enviar_mail.py ${{ inputs.sin_audio && '--sin-audio' || '' }}
