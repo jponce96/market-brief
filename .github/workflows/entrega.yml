@@ -29,10 +29,13 @@ jobs:
 
       - run: pip install -r requirements.txt
 
-      - name: Traer el guion del día
+      - name: Traer el guion y el informe del día
         env:
-          GUION_DOC_ID: ${{ secrets.GUION_DOC_ID }}
-        run: python scripts/bajar_guion.py
+          DRIVE_FOLDER_ID: ${{ secrets.DRIVE_FOLDER_ID }}
+        run: python scripts/bajar_material.py
+
+      - name: Convertir el informe a PDF
+        run: python scripts/armar_pdf.py
 
       - name: Generar el audio
         if: ${{ !inputs.sin_audio }}
