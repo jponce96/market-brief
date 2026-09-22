@@ -11,6 +11,8 @@
     "asunto": "Market Brief — {fecha}",
     "servidor_smtp": "smtp.gmail.com",
     "puerto_smtp": 465,
+    "adjuntar_pdf": true,
+    "adjuntar_html": true,
     "adjuntar_audio": true,
     "tamano_max_adjunto_mb": 20
   },

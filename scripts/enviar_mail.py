@@ -21,7 +21,7 @@ from datetime import date
 from email.message import EmailMessage
 from pathlib import Path
 
-from comun import DIR_AUDIO, cargar_config, log, morir, secreto
+from comun import DIR_AUDIO, DIR_DATOS, cargar_config, log, morir, secreto
 
 AFIRMATIVOS = {"si", "sí", "yes", "true", "1", "x"}
 
@@ -74,9 +74,64 @@ def ultimo_audio() -> Path | None:
     return archivos[-1] if archivos else None
 
 
-def cuerpo_html(nombre: str, titulo: str, url: str, fecha: str, hay_audio: bool) -> str:
+def juntar_adjuntos(cfg_mail: dict, con_audio: bool) -> list[dict]:
+    """Arma la lista de archivos a adjuntar, saltando lo que no exista.
+
+    El PDF es para leerlo cualquier día en cualquier dispositivo; el HTML
+    conserva los gráficos interactivos; el MP3 es el episodio.
+    """
+    candidatos: list[tuple[Path | None, str, str, str]] = []
+
+    if cfg_mail.get("adjuntar_pdf", True):
+        pdfs = sorted(DIR_DATOS.glob("market-brief-*.pdf"), key=lambda p: p.stat().st_mtime)
+        candidatos.append((pdfs[-1] if pdfs else None, "application", "pdf", ""))
+
+    if cfg_mail.get("adjuntar_html", True):
+        html = DIR_DATOS / "informe.html"
+        nombre = f"market-brief-{date.today():%Y-%m-%d}.html"
+        candidatos.append((html if html.exists() else None, "text", "html", nombre))
+
+    if con_audio and cfg_mail.get("adjuntar_audio", True):
+        candidatos.append((ultimo_audio(), "audio", "mpeg", ""))
+
+    limite = cfg_mail.get("tamano_max_adjunto_mb", 20)
+    adjuntos: list[dict] = []
+    total = 0.0
+
+    for ruta, maintype, subtype, nombre in candidatos:
+        if ruta is None or not ruta.exists():
+            log(f"  falta el adjunto {subtype}, sigo sin él")
+            continue
+        peso = ruta.stat().st_size / (1024 * 1024)
+        if total + peso > limite:
+            log(f"  {ruta.name} no entra en el límite de {limite} MB, queda afuera")
+            continue
+        total += peso
+        adjuntos.append(
+            {
+                "datos": ruta.read_bytes(),
+                "maintype": maintype,
+                "subtype": subtype,
+                "filename": nombre or ruta.name,
+            }
+        )
+        log(f"  adjunto {ruta.name} ({peso:.1f} MB)")
+
+    return adjuntos
+
+
+def cuerpo_html(nombre: str, titulo: str, url: str, fecha: str, adjuntos: list[dict]) -> str:
+    tipos = {a["subtype"] for a in adjuntos}
+    piezas = []
+    if "pdf" in tipos:
+        piezas.append("the full report as a PDF")
+    if "mpeg" in tipos:
+        piezas.append("the audio episode")
     linea_audio = (
-        "<p style='margin:0 0 16px'>The audio version is attached to this email.</p>" if hay_audio else ""
+        f"<p style='margin:0 0 16px'>Attached to this email: {' and '.join(piezas)}, "
+        "so you can come back to it any day.</p>"
+        if piezas
+        else ""
     )
     return f"""\
 <div style="font-family:system-ui,-apple-system,'Segoe UI',sans-serif;font-size:15px;line-height:1.6;color:#12120f;max-width:560px">
@@ -111,19 +166,8 @@ def main() -> None:
     password = secreto("SMTP_PASSWORD")
     url_informe = secreto("INFORME_URL")
 
-    adjunto = None
-    if "--sin-audio" not in sys.argv and cfg_mail.get("adjuntar_audio", True):
-        adjunto = ultimo_audio()
-        if adjunto:
-            limite = cfg_mail.get("tamano_max_adjunto_mb", 20)
-            tamano = adjunto.stat().st_size / (1024 * 1024)
-            if tamano > limite:
-                log(f"El audio pesa {tamano:.1f} MB y supera el límite de {limite}. Va sin adjunto.")
-                adjunto = None
-        else:
-            log("No hay MP3. El mail va solo con el link.")
-
-    datos_audio = adjunto.read_bytes() if adjunto else None
+    log("Adjuntos:")
+    adjuntos = juntar_adjuntos(cfg_mail, con_audio="--sin-audio" not in sys.argv)
     fecha = date.today().strftime("%Y-%m-%d")
     titulo = config["informe"]["titulo"]
     contexto = ssl.create_default_context()
@@ -141,11 +185,13 @@ def main() -> None:
                 "Generated automatically. Analysis material, not investment advice."
             )
             mensaje.add_alternative(
-                cuerpo_html(s["nombre"], titulo, url_informe, fecha, datos_audio is not None),
+                cuerpo_html(s["nombre"], titulo, url_informe, fecha, adjuntos),
                 subtype="html",
             )
-            if datos_audio:
-                mensaje.add_attachment(datos_audio, maintype="audio", subtype="mpeg", filename=adjunto.name)
+            for a in adjuntos:
+                mensaje.add_attachment(
+                    a["datos"], maintype=a["maintype"], subtype=a["subtype"], filename=a["filename"]
+                )
 
             servidor.send_message(mensaje)
             log(f"Enviado a {enmascarar(s['mail'])}")

@@ -38,9 +38,16 @@ Ya está creada en tu Drive, en la carpeta *Informe de mercados*, con las column
 
 Para que GitHub pueda leerla: **Archivo → Compartir → Publicar en la web → pestaña de suscriptores → formato CSV → Publicar**. Copiá esa URL.
 
-### 3. El documento del guion
+### 3. La carpeta de Drive
 
-El documento *Guion del día* de la misma carpeta tiene que quedar como **cualquier persona con el enlace puede ver**. De ahí sale el texto que se convierte en audio.
+La carpeta *Informe de mercados* tiene que quedar compartida como **cualquier persona con el enlace puede ver**. Cada mañana Claude deja ahí dos archivos con la fecha en el nombre:
+
+```
+informe-AAAA-MM-DD.html
+guion-AAAA-MM-DD.txt
+```
+
+La corrida lee el listado de la carpeta, busca los de hoy y los descarga. Si los de hoy no están, se detiene en vez de mandarte el material de ayer. Copiá el ID de la carpeta: es lo que va después de `/folders/` en su dirección.
 
 ### 4. Los Secrets
 
@@ -51,7 +58,7 @@ En el repositorio, **Settings → Secrets and variables → Actions → New repo
 | `SMTP_USER` | tu dirección de Gmail |
 | `SMTP_PASSWORD` | la contraseña de aplicación de Google, 16 letras |
 | `SUSCRIPTORES_CSV_URL` | la URL de la planilla publicada como CSV |
-| `GUION_DOC_ID` | el ID del documento del guion (lo que va entre `/d/` y `/edit` en su URL) |
+| `DRIVE_FOLDER_ID` | el ID de la carpeta de Drive (lo que va después de `/folders/`) |
 | `INFORME_URL` | el link fijo del informe |
 
 La contraseña de aplicación no es la de tu cuenta: se genera en la configuración de seguridad de Google con la verificación en dos pasos activada. Gmail no acepta la contraseña normal por SMTP. Esa clave la cargás vos directamente en GitHub; no hace falta que me la pases ni que quede escrita en ningún archivo.
@@ -65,6 +72,16 @@ En la pestaña **Actions** del repositorio, cada workflow tiene un botón *Run w
 3. *Audio y mail* completo → llega el mail con el MP3 adjunto.
 
 Si algo falla, el log de cada paso dice exactamente qué pasó.
+
+## Qué llega en el mail
+
+Tres archivos, además del link:
+
+- **El PDF del informe.** Se arma en la corrida con el Chrome que ya traen las máquinas de GitHub, así que no hay nada que instalar. Es la copia para leer cualquier día, en cualquier dispositivo, y la que queda archivada en tu casilla.
+- **El HTML del informe.** El mismo contenido pero conservando los gráficos interactivos, que en PDF quedan como imagen fija. Se abre con doble clic en cualquier navegador.
+- **El MP3 del episodio**, si la corrida lo generó.
+
+Cada uno se puede apagar desde `config.json` con `adjuntar_pdf`, `adjuntar_html` y `adjuntar_audio`. Si entre los tres pasan el límite de 20 MB, el que sobra queda afuera y el mail sale igual: el log dice cuál fue.
 
 ## Detalles que conviene saber
 
@@ -83,7 +100,9 @@ Si algo falla, el log de cada paso dice exactamente qué pasó.
 ```bash
 pip install -r requirements.txt
 python scripts/bajar_datos.py
-python scripts/bajar_guion.py
+python scripts/bajar_material.py
+python scripts/bajar_material.py --listar  # muestra qué archivos ve en la carpeta
+python scripts/armar_pdf.py
 python scripts/generar_audio.py            # edge-tts, con Piper de respaldo
 python scripts/generar_audio.py --voces    # lista las voces en inglés
 python scripts/enviar_mail.py --prueba     # muestra a quién le mandaría, sin enviar
