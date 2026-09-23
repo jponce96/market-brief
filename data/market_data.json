@@ -1,5 +1,5 @@
 {
-  "generado_utc": "2026-09-22T23:03:56Z",
+  "generado_utc": "2026-09-23T14:14:03Z",
   "nota_unidades": "var_dia, var_5_ruedas y var_ytd van en % salvo unidad='tasa', donde van en puntos básicos",
   "filas": [
     {
@@ -7,88 +7,88 @@
       "nombre": "S&P 500",
       "ticker": "^GSPC",
       "unidad": "precio",
-      "fecha_cierre": "2026-09-22",
-      "ultimo": 7764.64,
-      "var_dia": -0.0,
-      "var_5_ruedas": 2.36,
-      "var_ytd": 13.43
+      "fecha_cierre": "2026-09-23",
+      "ultimo": 7724.98,
+      "var_dia": -0.51,
+      "var_5_ruedas": 1.84,
+      "var_ytd": 12.85
     },
     {
       "grupo": "Equities US",
       "nombre": "Nasdaq Composite",
       "ticker": "^IXIC",
       "unidad": "precio",
-      "fecha_cierre": "2026-09-22",
-      "ultimo": 27244.28,
-      "var_dia": 0.45,
-      "var_5_ruedas": 4.86,
-      "var_ytd": 17.22
+      "fecha_cierre": "2026-09-23",
+      "ultimo": 26975.18,
+      "var_dia": -0.54,
+      "var_5_ruedas": 3.82,
+      "var_ytd": 16.06
     },
     {
       "grupo": "Equities US",
       "nombre": "Dow Jones",
       "ticker": "^DJI",
       "unidad": "precio",
-      "fecha_cierre": "2026-09-22",
-      "ultimo": 51863.69,
-      "var_dia": -0.36,
-      "var_5_ruedas": -0.44,
-      "var_ytd": 7.91
+      "fecha_cierre": "2026-09-23",
+      "ultimo": 51824.66,
+      "var_dia": -0.43,
+      "var_5_ruedas": -0.52,
+      "var_ytd": 7.83
     },
     {
       "grupo": "Equities US",
       "nombre": "Russell 2000",
       "ticker": "^RUT",
       "unidad": "precio",
-      "fecha_cierre": "2026-09-22",
-      "ultimo": 2889.92,
-      "var_dia": 0.51,
-      "var_5_ruedas": 0.68,
-      "var_ytd": 16.44
+      "fecha_cierre": "2026-09-23",
+      "ultimo": 2861.36,
+      "var_dia": -0.49,
+      "var_5_ruedas": -0.31,
+      "var_ytd": 15.29
     },
     {
       "grupo": "Equities US",
       "nombre": "VIX",
       "ticker": "^VIX",
       "unidad": "precio",
-      "fecha_cierre": "2026-09-22",
-      "ultimo": 14.21,
-      "var_dia": -4.44,
-      "var_5_ruedas": -17.38,
-      "var_ytd": -4.95
+      "fecha_cierre": "2026-09-23",
+      "ultimo": 14.41,
+      "var_dia": -3.09,
+      "var_5_ruedas": -16.22,
+      "var_ytd": -3.61
     },
     {
       "grupo": "Equities internacionales",
       "nombre": "Stoxx 600",
       "ticker": "^STOXX",
       "unidad": "precio",
-      "fecha_cierre": "2026-09-21",
-      "ultimo": 641.93,
-      "var_dia": 1.02,
-      "var_5_ruedas": 0.93,
-      "var_ytd": 8.29
+      "fecha_cierre": "2026-09-23",
+      "ultimo": 640.3,
+      "var_dia": -0.25,
+      "var_5_ruedas": 0.97,
+      "var_ytd": 8.02
     },
     {
       "grupo": "Equities internacionales",
       "nombre": "DAX",
       "ticker": "^GDAXI",
       "unidad": "precio",
-      "fecha_cierre": "2026-09-21",
-      "ultimo": 25575.01,
-      "var_dia": 1.07,
-      "var_5_ruedas": 0.53,
-      "var_ytd": 4.43
+      "fecha_cierre": "2026-09-23",
+      "ultimo": 25450.88,
+      "var_dia": -0.49,
+      "var_5_ruedas": 0.19,
+      "var_ytd": 3.92
     },
     {
       "grupo": "Equities internacionales",
       "nombre": "FTSE 100",
       "ticker": "^FTSE",
       "unidad": "precio",
-      "fecha_cierre": "2026-09-21",
-      "ultimo": 10739.0,
-      "var_dia": 0.75,
-      "var_5_ruedas": 0.39,
-      "var_ytd": 8.13
+      "fecha_cierre": "2026-09-23",
+      "ultimo": 10714.25,
+      "var_dia": -0.23,
+      "var_5_ruedas": 0.53,
+      "var_ytd": 7.88
     },
     {
       "grupo": "Equities internacionales",
@@ -106,132 +106,132 @@
       "nombre": "Hang Seng",
       "ticker": "^HSI",
       "unidad": "precio",
-      "fecha_cierre": "2026-09-21",
-      "ultimo": 25042.71,
-      "var_dia": 1.18,
-      "var_5_ruedas": 0.5,
-      "var_ytd": -2.29
+      "fecha_cierre": "2026-09-23",
+      "ultimo": 24834.12,
+      "var_dia": -0.83,
+      "var_5_ruedas": 0.68,
+      "var_ytd": -3.11
     },
     {
       "grupo": "Equities internacionales",
       "nombre": "S&P Merval",
       "ticker": "^MERV",
       "unidad": "precio",
-      "fecha_cierre": "2026-09-22",
-      "ultimo": 2997659.5,
-      "var_dia": -0.04,
-      "var_5_ruedas": -2.67,
-      "var_ytd": -1.77
+      "fecha_cierre": "2026-09-21",
+      "ultimo": 2998956.0,
+      "var_dia": -0.76,
+      "var_5_ruedas": -2.77,
+      "var_ytd": -1.73
     },
     {
       "grupo": "Tasas US",
       "nombre": "Treasury 13 semanas",
       "ticker": "^IRX",
       "unidad": "tasa",
-      "fecha_cierre": "2026-09-22",
-      "ultimo": 4.005,
-      "var_dia": 2.3,
-      "var_5_ruedas": 4.5,
-      "var_ytd": 45.8
+      "fecha_cierre": "2026-09-23",
+      "ultimo": 4.015,
+      "var_dia": 3.3,
+      "var_5_ruedas": 5.5,
+      "var_ytd": 46.8
     },
     {
       "grupo": "Tasas US",
       "nombre": "Treasury 5 anios",
       "ticker": "^FVX",
       "unidad": "tasa",
-      "fecha_cierre": "2026-09-22",
-      "ultimo": 4.842,
-      "var_dia": 0.8,
-      "var_5_ruedas": 1.6,
-      "var_ytd": 112.0
+      "fecha_cierre": "2026-09-23",
+      "ultimo": 4.924,
+      "var_dia": 9.0,
+      "var_5_ruedas": 9.8,
+      "var_ytd": 120.2
     },
     {
       "grupo": "Tasas US",
       "nombre": "Treasury 10 anios",
       "ticker": "^TNX",
       "unidad": "tasa",
-      "fecha_cierre": "2026-09-22",
-      "ultimo": 4.968,
-      "var_dia": 0.5,
-      "var_5_ruedas": -2.8,
-      "var_ytd": 80.5
+      "fecha_cierre": "2026-09-23",
+      "ultimo": 5.037,
+      "var_dia": 7.4,
+      "var_5_ruedas": 4.1,
+      "var_ytd": 87.4
     },
     {
       "grupo": "Tasas US",
       "nombre": "Treasury 30 anios",
       "ticker": "^TYX",
       "unidad": "tasa",
-      "fecha_cierre": "2026-09-22",
-      "ultimo": 5.303,
-      "var_dia": 0.7,
-      "var_5_ruedas": -6.1,
-      "var_ytd": 46.3
+      "fecha_cierre": "2026-09-23",
+      "ultimo": 5.347,
+      "var_dia": 5.1,
+      "var_5_ruedas": -1.7,
+      "var_ytd": 50.7
     },
     {
       "grupo": "Commodities",
       "nombre": "WTI",
       "ticker": "CL=F",
       "unidad": "precio",
-      "fecha_cierre": "2026-09-22",
-      "ultimo": 89.63,
-      "var_dia": -6.42,
-      "var_5_ruedas": -15.31,
-      "var_ytd": 56.1
+      "fecha_cierre": "2026-09-23",
+      "ultimo": 91.8,
+      "var_dia": -2.95,
+      "var_5_ruedas": -10.38,
+      "var_ytd": 59.87
     },
     {
       "grupo": "Commodities",
       "nombre": "Brent",
       "ticker": "BZ=F",
       "unidad": "precio",
-      "fecha_cierre": "2026-09-22",
-      "ultimo": 98.44,
-      "var_dia": -1.89,
-      "var_5_ruedas": -9.48,
-      "var_ytd": 61.77
+      "fecha_cierre": "2026-09-23",
+      "ultimo": 97.11,
+      "var_dia": -2.16,
+      "var_5_ruedas": -8.24,
+      "var_ytd": 59.59
     },
     {
       "grupo": "Commodities",
       "nombre": "Oro",
       "ticker": "GC=F",
       "unidad": "precio",
-      "fecha_cierre": "2026-09-22",
-      "ultimo": 4400.7,
-      "var_dia": 0.38,
-      "var_5_ruedas": 1.57,
-      "var_ytd": 1.37
+      "fecha_cierre": "2026-09-23",
+      "ultimo": 4325.8,
+      "var_dia": -1.16,
+      "var_5_ruedas": -1.41,
+      "var_ytd": -0.35
     },
     {
       "grupo": "Commodities",
       "nombre": "Cobre",
       "ticker": "HG=F",
       "unidad": "precio",
-      "fecha_cierre": "2026-09-22",
-      "ultimo": 6.9,
-      "var_dia": 3.21,
-      "var_5_ruedas": 8.36,
-      "var_ytd": 22.58
+      "fecha_cierre": "2026-09-23",
+      "ultimo": 6.77,
+      "var_dia": 0.18,
+      "var_5_ruedas": 5.29,
+      "var_ytd": 20.28
     },
     {
       "grupo": "Commodities",
       "nombre": "Soja",
       "ticker": "ZS=F",
       "unidad": "precio",
-      "fecha_cierre": "2026-09-22",
-      "ultimo": 1325.0,
-      "var_dia": -0.23,
-      "var_5_ruedas": 0.47,
-      "var_ytd": 28.58
+      "fecha_cierre": "2026-09-23",
+      "ultimo": 1313.75,
+      "var_dia": -0.89,
+      "var_5_ruedas": -0.51,
+      "var_ytd": 27.49
     },
     {
       "grupo": "Monedas",
       "nombre": "Dollar Index",
       "ticker": "DX-Y.NYB",
       "unidad": "precio",
-      "fecha_cierre": "2026-09-22",
-      "ultimo": 100.54,
-      "var_dia": 0.11,
-      "var_5_ruedas": 0.89,
-      "var_ytd": 2.3
+      "fecha_cierre": "2026-09-23",
+      "ultimo": 101.02,
+      "var_dia": 0.58,
+      "var_5_ruedas": 1.37,
+      "var_ytd": 2.78
     },
     {
       "grupo": "Monedas",
@@ -239,10 +239,10 @@
       "ticker": "EURUSD=X",
       "unidad": "precio",
       "fecha_cierre": "2026-09-23",
-      "ultimo": 1.15,
-      "var_dia": -0.12,
-      "var_5_ruedas": -0.75,
-      "var_ytd": -2.52
+      "ultimo": 1.14,
+      "var_dia": -0.51,
+      "var_5_ruedas": -1.14,
+      "var_ytd": -2.9
     },
     {
       "grupo": "Monedas",
@@ -250,54 +250,54 @@
       "ticker": "USDJPY=X",
       "unidad": "precio",
       "fecha_cierre": "2026-09-23",
-      "ultimo": 157.47,
-      "var_dia": 0.07,
-      "var_5_ruedas": 1.42,
-      "var_ytd": 0.68
+      "ultimo": 158.21,
+      "var_dia": 0.53,
+      "var_5_ruedas": 1.89,
+      "var_ytd": 1.15
     },
     {
       "grupo": "Monedas",
       "nombre": "USD/CNY",
       "ticker": "USDCNY=X",
       "unidad": "precio",
-      "fecha_cierre": "2026-09-22",
+      "fecha_cierre": "2026-09-23",
       "ultimo": 6.7,
-      "var_dia": -0.03,
-      "var_5_ruedas": -0.19,
-      "var_ytd": -4.3
+      "var_dia": 0.07,
+      "var_5_ruedas": -0.17,
+      "var_ytd": -4.23
     },
     {
       "grupo": "Monedas",
       "nombre": "USD/ARS",
       "ticker": "USDARS=X",
       "unidad": "precio",
-      "fecha_cierre": "2026-09-22",
-      "ultimo": 1514.23,
-      "var_dia": 0.32,
-      "var_5_ruedas": 0.42,
-      "var_ytd": 4.32
+      "fecha_cierre": "2026-09-23",
+      "ultimo": 1515.5,
+      "var_dia": 0.08,
+      "var_5_ruedas": 0.57,
+      "var_ytd": 4.41
     },
     {
       "grupo": "Cripto",
       "nombre": "Bitcoin",
       "ticker": "BTC-USD",
       "unidad": "precio",
-      "fecha_cierre": "2026-09-22",
-      "ultimo": 86205.4,
-      "var_dia": -0.46,
-      "var_5_ruedas": 12.83,
-      "var_ytd": -1.49
+      "fecha_cierre": "2026-09-23",
+      "ultimo": 84687.07,
+      "var_dia": -1.72,
+      "var_5_ruedas": 4.68,
+      "var_ytd": -3.22
     },
     {
       "grupo": "Cripto",
       "nombre": "Ether",
       "ticker": "ETH-USD",
       "unidad": "precio",
-      "fecha_cierre": "2026-09-22",
-      "ultimo": 2757.0,
-      "var_dia": -0.7,
-      "var_5_ruedas": 12.66,
-      "var_ytd": -7.08
+      "fecha_cierre": "2026-09-23",
+      "ultimo": 2671.9,
+      "var_dia": -2.93,
+      "var_5_ruedas": 2.32,
+      "var_ytd": -9.95
     }
   ]
 }
