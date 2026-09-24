@@ -1,11 +1,9 @@
 name: Datos de mercado
 
-# 09:15 UTC = 06:15 en Buenos Aires, de lunes a viernes.
-# GitHub puede atrasar la ejecución entre 5 y 15 minutos en horarios pico,
-# por eso corre 45 minutos antes de que se necesite.
+# Lo dispara cron-job.org a las 06:15 de Buenos Aires, de lunes a viernes.
+# No usa el horario propio de GitHub porque en cuentas gratuitas se atrasa
+# varias horas. También se puede correr a mano con "Run workflow".
 on:
-  schedule:
-    - cron: "15 9 * * 1-5"
   workflow_dispatch:
 
 permissions:
@@ -13,7 +11,11 @@ permissions:
 
 jobs:
   datos:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
+    # Hora de Buenos Aires para todo el trabajo: así la fecha que buscan los
+    # scripts es siempre la del día en Argentina, corra a la hora que corra.
+    env:
+      TZ: America/Argentina/Buenos_Aires
     steps:
       - uses: actions/checkout@v4
 
@@ -32,5 +34,5 @@ jobs:
           git config user.name "market-brief-bot"
           git config user.email "actions@github.com"
           git add data/market_data.json
-          git diff --staged --quiet || git commit -m "datos de mercado $(date -u +%F)"
+          git diff --staged --quiet || git commit -m "datos de mercado $(date +%F)"
           git push

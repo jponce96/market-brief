@@ -1,10 +1,10 @@
 name: Audio y mail
 
-# 10:20 UTC = 07:20 en Buenos Aires, de lunes a viernes.
-# Corre después de que Claude dejó el guion del día en el documento de Drive.
+# Lo dispara cron-job.org a las 07:20 de Buenos Aires, de lunes a viernes,
+# después de que Claude dejó el guion y el informe del día en Drive.
+# No usa el horario propio de GitHub porque en cuentas gratuitas se atrasa
+# varias horas. También se puede correr a mano con "Run workflow".
 on:
-  schedule:
-    - cron: "20 10 * * 1-5"
   workflow_dispatch:
     inputs:
       sin_audio:
@@ -18,7 +18,11 @@ on:
 
 jobs:
   entrega:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
+    # Hora de Buenos Aires para todo el trabajo: así la fecha que buscan los
+    # scripts es siempre la del día en Argentina, corra a la hora que corra.
+    env:
+      TZ: America/Argentina/Buenos_Aires
     steps:
       - uses: actions/checkout@v4
 
