@@ -11,6 +11,10 @@ on:
         description: "Mandar solo el link, sin generar el MP3"
         type: boolean
         default: false
+      solo_remitente:
+        description: "Prueba: mandar el mail solo a la cuenta que envía, no a la planilla"
+        type: boolean
+        default: false
       guardar_audio:
         description: "Guardar el MP3 como archivo descargable de la corrida (en un repositorio público lo puede bajar cualquiera)"
         type: boolean
@@ -62,4 +66,4 @@ jobs:
           SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
           SUSCRIPTORES_CSV_URL: ${{ secrets.SUSCRIPTORES_CSV_URL }}
           INFORME_URL: ${{ secrets.INFORME_URL }}
-        run: python scripts/enviar_mail.py ${{ inputs.sin_audio && '--sin-audio' || '' }}
+        run: python scripts/enviar_mail.py ${{ inputs.sin_audio && '--sin-audio' || '' }} ${{ inputs.solo_remitente && '--solo-remitente' || '' }}
