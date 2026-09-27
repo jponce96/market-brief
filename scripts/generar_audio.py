@@ -25,6 +25,7 @@ from comun import ARCHIVO_GUION, DIR_AUDIO, asegurar_carpetas, cargar_config, lo
 LIMITE_CHUNK = 3000
 BASE_PIPER = "https://huggingface.co/rhasspy/piper-voices/resolve/main/en/en_US/lessac/medium"
 MODELO_PIPER = "en_US-lessac-medium.onnx"
+INTENTOS_EDGE = 3
 
 
 # --------------------------------------------------------------------------
@@ -59,17 +60,42 @@ async def _listar_voces() -> None:
             print(f'{v["ShortName"]:38} {v["Gender"]:8} {v["Locale"]}')
 
 
-async def _sintetizar_edge(texto: str, destino: Path, voz: str, velocidad: str, volumen: str) -> None:
+async def _bloque_edge(chunk: str, voz: str, velocidad: str, volumen: str) -> bytes:
+    """Sintetiza un bloque y devuelve el audio completo, o lanza un error."""
     import edge_tts
 
+    audio = bytearray()
+    comunicador = edge_tts.Communicate(chunk, voz, rate=velocidad, volume=volumen)
+    async for evento in comunicador.stream():
+        if evento["type"] == "audio":
+            audio.extend(evento["data"])
+    if not audio:
+        raise RuntimeError("el bloque volvió sin audio")
+    return bytes(audio)
+
+
+async def _sintetizar_edge(texto: str, destino: Path, voz: str, velocidad: str, volumen: str) -> None:
+    """Sintetiza bloque por bloque, con reintentos.
+
+    El servicio de Microsoft a veces corta un pedido suelto ("No audio was
+    received"). En vez de tirar todo lo hecho y pasar a Piper, se reintenta
+    solo el bloque que falló. Recién si un bloque falla todas las veces,
+    el error sube y el script cae a Piper.
+    """
     chunks = partir_en_chunks(texto)
     log(f"edge-tts: {len(chunks)} bloques con la voz {voz}")
     with destino.open("wb") as salida:
         for i, chunk in enumerate(chunks, start=1):
-            comunicador = edge_tts.Communicate(chunk, voz, rate=velocidad, volume=volumen)
-            async for evento in comunicador.stream():
-                if evento["type"] == "audio":
-                    salida.write(evento["data"])
+            for intento in range(1, INTENTOS_EDGE + 1):
+                try:
+                    salida.write(await _bloque_edge(chunk, voz, velocidad, volumen))
+                    break
+                except Exception as e:  # noqa: BLE001
+                    if intento == INTENTOS_EDGE:
+                        raise
+                    espera = 20 * intento
+                    log(f"  bloque {i}: falló el intento {intento} ({e}); reintento en {espera} s")
+                    await asyncio.sleep(espera)
             log(f"  bloque {i}/{len(chunks)}")
 
 
@@ -92,7 +118,7 @@ def _sintetizar_piper(texto: str, destino: Path) -> None:
     if shutil.which("piper") is None:
         morir("Piper no está instalado. Agregá piper-tts a requirements.txt.")
     if shutil.which("ffmpeg") is None:
-        morir("Falta ffmpeg para pasar de wav a mp3.")
+        morir("Falta ffmpeg para pasar de wav a mp3. En GitHub lo instala el paso 'Instalar ffmpeg' del workflow.")
 
     modelo = _bajar_modelo_piper(DIR_AUDIO / "modelos")
     wav = destino.with_suffix(".wav")
@@ -163,6 +189,8 @@ def main() -> None:
         _sintetizar_piper(texto, destino)
 
     if not destino.exists() or destino.stat().st_size < 10_000:
+        # Se borra para que el mail no adjunte un MP3 roto.
+        destino.unlink(missing_ok=True)
         morir("El audio salió vacío o demasiado chico.")
 
     log(f"Audio listo: {destino} ({destino.stat().st_size / (1024 * 1024):.1f} MB)")
