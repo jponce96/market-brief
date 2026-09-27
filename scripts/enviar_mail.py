@@ -7,6 +7,8 @@ Cada mail sale personalizado con el nombre de la persona.
     python scripts/enviar_mail.py
     python scripts/enviar_mail.py --sin-audio
     python scripts/enviar_mail.py --prueba      # muestra a quién le mandaría, sin enviar
+    python scripts/enviar_mail.py --solo-remitente   # manda el mail completo solo a la
+                                                     # cuenta que envía, no a la planilla
 """
 
 from __future__ import annotations
@@ -19,6 +21,7 @@ import sys
 import urllib.request
 from datetime import date
 from email.message import EmailMessage
+from email.utils import formataddr
 from pathlib import Path
 
 from comun import DIR_AUDIO, DIR_DATOS, cargar_config, log, morir, secreto
@@ -153,6 +156,10 @@ def main() -> None:
     cfg_mail = config["mail"]
 
     prueba = "--prueba" in sys.argv
+    solo_remitente = "--solo-remitente" in sys.argv
+
+    # La planilla se lee siempre, también en las pruebas: así se confirma que
+    # el link publicado como CSV funciona.
     suscriptores = leer_suscriptores(secreto("SUSCRIPTORES_CSV_URL"))
     log(f"Suscriptores activos: {len(suscriptores)}")
     for s in suscriptores:
@@ -166,19 +173,31 @@ def main() -> None:
     password = secreto("SMTP_PASSWORD")
     url_informe = secreto("INFORME_URL")
 
+    asunto = cfg_mail["asunto"]
+    if solo_remitente:
+        # Prueba de punta a punta sin molestar a nadie: el mail sale completo,
+        # con adjuntos, pero el único destinatario es la propia cuenta que envía.
+        log("Modo solo remitente: el mail va únicamente a la cuenta que envía.")
+        suscriptores = [{"nombre": "there", "mail": usuario}]
+        asunto = "[PRUEBA] " + asunto
+
     log("Adjuntos:")
     adjuntos = juntar_adjuntos(cfg_mail, con_audio="--sin-audio" not in sys.argv)
     fecha = date.today().strftime("%Y-%m-%d")
     titulo = config["informe"]["titulo"]
     contexto = ssl.create_default_context()
 
+    # Remitente con nombre visible ("Market Brief <cuenta@gmail.com>"): se ve
+    # mejor en la bandeja y ayuda a que no lo tomen por spam.
+    remitente = formataddr((titulo, usuario))
+
     with smtplib.SMTP_SSL(cfg_mail["servidor_smtp"], cfg_mail["puerto_smtp"], context=contexto) as servidor:
         servidor.login(usuario, password)
 
         for s in suscriptores:
             mensaje = EmailMessage()
-            mensaje["Subject"] = cfg_mail["asunto"].format(fecha=fecha)
-            mensaje["From"] = usuario
+            mensaje["Subject"] = asunto.format(fecha=fecha)
+            mensaje["From"] = remitente
             mensaje["To"] = s["mail"]
             mensaje.set_content(
                 f"Hi {s['nombre']},\n\n{titulo} — {fecha}\n\nOpen the report: {url_informe}\n\n"
