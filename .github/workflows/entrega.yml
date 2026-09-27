@@ -45,8 +45,17 @@ jobs:
       - name: Convertir el informe a PDF
         run: python scripts/armar_pdf.py
 
+      # ffmpeg lo necesita Piper, el respaldo de edge-tts, para pasar el audio
+      # a MP3. La máquina ubuntu-24.04 de GitHub no lo trae instalado.
+      - name: Instalar ffmpeg
+        if: ${{ !inputs.sin_audio }}
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg > /dev/null
+
+      # Si el audio falla de todas formas, el mail sale igual con el link,
+      # el PDF y el HTML, sin el MP3. La corrida queda marcada con un aviso.
       - name: Generar el audio
         if: ${{ !inputs.sin_audio }}
+        continue-on-error: true
         run: python scripts/generar_audio.py
 
       # Desactivado por defecto: en un repositorio público, los archivos de una
